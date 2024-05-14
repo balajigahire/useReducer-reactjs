@@ -3,6 +3,7 @@ import { useReducer } from "react";
 const initialState = {
   count: 0,
   user: "Balaji",
+  hideText: null,
 };
 
 function reducer(state, action) {
@@ -22,13 +23,27 @@ function reducer(state, action) {
         ...state,
         user: (state.user = "Avadhut"),
       };
+
+    case "show":
+      return {
+        ...state,
+        hideText: (state.hideText = false),
+      };
+    case "hide":
+      return {
+        ...state,
+        showText: (state.hideText = true),
+      };
     default:
       throw new Error("Unknown action");
   }
 }
 
 function App() {
-  const [{ count, user }, dispatch] = useReducer(reducer, initialState);
+  const [{ count, user, hideText }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
 
   return (
     <div className="App">
@@ -41,13 +56,21 @@ function App() {
           </div>
         </section>
 
-        <section>
+        <section style={{ marginTop: "20px" }}>
           <div style={{ textAlign: "center", fontSize: "22px" }}>
             User: {user}{" "}
             <button onClick={() => dispatch({ type: "userName" })}>
               Update User
             </button>
           </div>
+        </section>
+
+        <section
+          style={{ marginTop: "20px", textAlign: "center", fontSize: "22px" }}
+        >
+          <button onClick={() => dispatch({ type: "hide" })}>Show</button>{" "}
+          <button onClick={() => dispatch({ type: "show" })}>Hide</button>
+          {hideText && <p>Hide/Show content useing useReducer</p>}
         </section>
       </header>
     </div>
